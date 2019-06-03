@@ -36,6 +36,26 @@ namespace NanoWraps
 			}
 		};
 
+		[Serializable]
+		struct TextureVertex2
+
+		{
+			public float x, y, z, w;
+			public float u, v;
+			public const VertexFormat FORMAT = VertexFormat.PositionRhw | VertexFormat.Texture1;
+			public static readonly int SIZE = Marshal.SizeOf(typeof(TextureVertex2));
+
+			public TextureVertex2(float x, float y, float z, float w, float u, float v)
+			{
+				this.x = x;
+				this.y = y;
+				this.z = z;
+				this.w = w;
+				this.u = u;
+				this.v = v;
+			}
+		};
+
 		public void DrawRectangle(float x, float y, float w, float h, uint argb)
 		{
 			ColorVertex2[] vs = new[]{
@@ -45,6 +65,19 @@ namespace NanoWraps
 				new ColorVertex2(x, y + h, 0, 1, argb)
 			};
 			renderer.Device.VertexFormat = ColorVertex2.FORMAT;
+			renderer.Device.DrawUserPrimitives(PrimitiveType.TriangleFan, 0, 2, vs);
+		}
+
+		public void DrawRectangle(float x, float y, float w, float h, Texture texture, float xScale = 1.0f, float yScale = 1.0f)
+		{
+			TextureVertex2[] vs = new[]{
+				new TextureVertex2(x, y, 0, 1, 0, 0),
+				new TextureVertex2( x + w, y, 0, 1, 1, 0),
+				new TextureVertex2(x + w, y + h, 0, 1, 1, 1),
+				new TextureVertex2(x, y + h, 0, 1, 0, 1)
+			};
+			renderer.Device.VertexFormat = TextureVertex2.FORMAT;
+			renderer.Device.SetTexture(0, texture);
 			renderer.Device.DrawUserPrimitives(PrimitiveType.TriangleFan, 0, 2, vs);
 		}
 

@@ -10,5 +10,11 @@ namespace NanoWraps
 	{
 		public int Index { get; set; }
 		public string Title { get; set; }
+		public bool Locked { get; set; }
+
+		public override string ToString()
+		{
+			return Title;
+		}
 	}
 }

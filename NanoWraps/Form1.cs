@@ -15,7 +15,7 @@ namespace NanoWraps
 	{
 		private Renderer renderer;
 		Painter painter;
-
+		private ResourceManager resourceManager;
 		private Thread thread;
 		Scene scene;
 		private bool enabled;
@@ -30,11 +30,13 @@ namespace NanoWraps
 		{
 			scene = new Scene();
 
-			gameStack = new GameStack(scene);
-			gameStack.Push(new MainMenu.MainMenuFrame());
-
 			renderer = new Renderer(this);
 			painter = new Painter(renderer);
+
+			resourceManager = new ResourceManager(renderer.Device, @"..\..\Textures");
+
+			gameStack = new GameStack(scene, resourceManager, this);
+			gameStack.Push(new MainMenu.MainMenuFrame());
 
 			enabled = true;
 			thread = new Thread(StartUpdate);
@@ -63,6 +65,8 @@ namespace NanoWraps
 			enabled = false;
 			if (thread.IsAlive)
 				thread.Join();
+
+			resourceManager.Dispose();
 			renderer.Dispose();
 		}
 	}

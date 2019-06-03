@@ -15,10 +15,14 @@ namespace NanoWraps
 		private bool enable;
 		Thread thread;
 		Scene scene;
+		private ResourceManager resourceManager;
+		Form1 form;
 
-		public GameStack(Scene scene)
+		public GameStack(Scene scene, ResourceManager resourceManager, Form1 form)
 		{
 			this.scene = scene;
+			this.resourceManager = resourceManager;
+			this.form = form;
 		}
 
 		public void Push(GameStackItem item)
@@ -72,7 +76,7 @@ namespace NanoWraps
 						items.Peek().Suspend();
 					}
 
-					item.SetInterfaces(scene);
+					item.SetInterfaces(scene, resourceManager, form);
 					if (item.Initialize())
 					{
 						items.Push(item);

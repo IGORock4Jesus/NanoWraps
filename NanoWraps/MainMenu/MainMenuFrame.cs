@@ -12,6 +12,17 @@ namespace NanoWraps.MainMenu
 
 		public override bool Initialize()
 		{
+			// создаем фон
+			ResourceManager.LoadTexture("background", "menu-back.png");
+			Sprite sprite = new Sprite()
+			{
+				Name = "background",
+				Texture = ResourceManager.GetTexture("background"),
+				Position = new SharpDX.Vector2(0, 0),
+				Size = new SharpDX.Vector2(Form.ClientSize.Width, Form.ClientSize.Height)
+			};
+			Scene.Add(sprite);
+
 			parser = new LevelParser();
 			parser.Open();
 

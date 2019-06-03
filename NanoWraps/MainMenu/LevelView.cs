@@ -16,17 +16,20 @@ namespace NanoWraps.MainMenu
 
 		public LevelView(Level level)
 		{
-			Level = level;
+			Level = level ?? throw new ArgumentNullException(nameof(level));
 			Position = new Vector2(100, 100 * Level.Index);
 		}
 
 		public override void Render(Device device, Painter painter)
 		{
-			painter.DrawRectangle(Position.X, Position.Y, Size.X, Size.Y, 0xffff3030);
+			painter.DrawRectangle(Position.X, Position.Y, Size.X, Size.Y,Level.Locked ? 0xffff8080 : 0xffff3030);
 
-			if(Level != null)
+			painter.DrawString(Position.X, Position.Y, Size.X, Size.Y, 32, Level.Title, "Arial",
+				FontDrawFlags.Center | FontDrawFlags.VerticalCenter);
+
+			if (Level.Locked)
 			{
-				painter.DrawString(Position.X, Position.Y, Size.X, Size.Y, 32, Level.Title, "Arial", FontDrawFlags.Center | FontDrawFlags.VerticalCenter);
+
 			}
 		}
 	}
